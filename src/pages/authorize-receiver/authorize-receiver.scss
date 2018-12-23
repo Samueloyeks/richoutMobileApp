@@ -1,0 +1,75 @@
+page-authorize-receiver {
+    @font-face{
+        font-family: Quantico;
+        src: url("../assets/fonts/Quantico")
+    }
+    *{
+        font-family:Quantico;
+    }
+    ion-content{
+        background-image: url("../../assets/imgs/bottom_image.png") ;
+        background-repeat: no-repeat;
+        background-position: bottom left;
+    }
+    .toolbar-background{
+        background-color: #FFFFFF;
+    }
+    .toolbar-title-ios {
+        text-align:right;
+    }
+    .toolbar-ios ion-title {
+        padding-right: 55px;
+    }
+    .scroll-content{
+        overflow-y:auto;
+    }
+    .auth-page {
+        .invalid {
+          .item-inner {
+            border-bottom: 1px solid #ff6153;
+          }
+        }
+        .valid {
+          .item-inner {
+            border-bottom: 1px solid #203e61;
+          }
+        }
+    .error-message {
+        min-height: 2.2rem;
+        background-color: #FFFFFF;
+        p {
+          color: #ff6153;
+          font-size: 80%;
+          background-color: #FFFFFF;
+          padding: 0px;
+          margin: 0px;
+        }
+        ion-label {
+          margin: 2px 0;
+        }
+        .item-inner {
+          border-bottom: 0 !important;
+        }
+      }
+    }
+      .input{
+        padding-left:0px;
+        border-radius: 1px;
+        background-color: #C4C4C4;
+        ion-input{
+            height: 39px;
+        }
+        .item-inner{
+            padding-right: 0px;
+        }
+        #icon{
+            margin-top: 0px;
+            margin-bottom: 0px;
+        }
+        ion-icon::before {
+            // display: inline-block;
+            color: #203e61;
+        }
+        .text-input{padding-left:10px}
+      }
+}

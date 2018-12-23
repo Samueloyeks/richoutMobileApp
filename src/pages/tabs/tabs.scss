@@ -1,0 +1,47 @@
+    .tabs .tabbar {
+        background: #203e61;
+    }
+    .tabs-ios .tab-button-icon{
+        height: 40px;
+        margin-bottom: 6px;
+    }
+    .ion-md-donate,.ion-ios-donate{
+        content:url("../../assets/imgs/Group\ 2.png");
+    }
+    .ion-md-profile,.ion-ios-profile{
+        content:url("../../assets/imgs/Vector.png");
+    }
+    .ion-md-help,.ion-ios-help{
+        content:url("../../assets/imgs/Group.png");
+    }
+    .ion-md-about,.ion-ios-about{
+        content:url("../../assets/imgs/Info\ mark.png");
+    }
+
+    .ion-ios-donate-outline::before{
+        content:url("../../assets/imgs/Group\ 2.png");
+    }
+
+    .ion-ios-profile-outline::before{
+        content:url("../../assets/imgs/Vector.png");
+    }
+    .ion-ios-help-outline::before{
+        content:url("../../assets/imgs/Group.png");
+    }
+    .ion-ios-about-outline::before{
+        content:url("../../assets/imgs/Info\ mark.png");
+    }
+  
+    .tabs-ios .tab-button:hover:not(.disable-hover), .tabs-ios .tab-button[aria-selected=true] {
+        color: #488aff;
+        box-shadow:0px -7px 0px -3px #ffa600 inset;
+        margin-right: 15px;
+    margin-left: 15px;
+    }
+    .tabs-md .tab-button:hover:not(.disable-hover), .tabs-md .tab-button[aria-selected=true] {
+        color: #203e61;
+        box-shadow:0px -7px 0px -3px #ffa600 inset;
+        margin-right: 15px;
+    margin-left: 15px;
+    }
+  

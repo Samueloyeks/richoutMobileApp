@@ -1,0 +1,7 @@
+{
+  "name": "RichOut",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular"
+}

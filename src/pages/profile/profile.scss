@@ -1,0 +1,19 @@
+page-profile {
+    @font-face{
+        font-family: Quantico;
+        src: url("../assets/fonts/Quantico")
+    }
+    *{
+        font-family:Quantico;
+    }
+    .toolbar-background{
+        background-color: #FFFFFF;
+    }
+    .toolbar-title-ios {
+        text-align:right;
+    }
+    .toolbar-ios ion-title {
+        padding-right: 55px;
+        background-color: #FFFFFF;
+    }
+}
