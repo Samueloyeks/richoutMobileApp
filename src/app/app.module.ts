@@ -2,6 +2,8 @@ import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
+import { Camera } from '@ionic-native/camera';
+import { Keyboard } from '@ionic-native/keyboard';
 
 import { AboutPage } from '../pages/about/about';
 import { ContactPage } from '../pages/contact/contact';
@@ -17,6 +19,8 @@ import { ResetPasswordPage } from '../pages/reset-password/reset-password';
 import { LandingPage } from '../pages/landing/landing';
 import { AuthorizeDonorPage } from '../pages/authorize-donor/authorize-donor';
 import { AuthorizeReceiverPage } from '../pages/authorize-receiver/authorize-receiver';
+import { SignupModalPage } from '../pages/signup-modal/signup-modal';
+import { IonicImageViewerModule } from 'ionic-img-viewer';
 
 @NgModule({
   declarations: [
@@ -30,12 +34,14 @@ import { AuthorizeReceiverPage } from '../pages/authorize-receiver/authorize-rec
     LandingPage,
     AuthorizeDonorPage,
     AuthorizeReceiverPage,
+    SignupModalPage,
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp,{
-      scrollAssist:false,
-      autoFocusAssist:false
+    IonicImageViewerModule,
+    IonicModule.forRoot(MyApp, {
+      scrollAssist: false,
+      autoFocusAssist: false,
     })
   ],
   bootstrap: [IonicApp],
@@ -50,13 +56,17 @@ import { AuthorizeReceiverPage } from '../pages/authorize-receiver/authorize-rec
     LandingPage,
     AuthorizeDonorPage,
     AuthorizeReceiverPage,
+    SignupModalPage,
+
   ],
   providers: [
+    Camera,
+    Keyboard,
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
     FirebaseServiceProvider,
     ProfileServiceProvider
   ]
 })
-export class AppModule {}
+export class AppModule { }

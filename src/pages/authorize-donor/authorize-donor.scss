@@ -1,4 +1,5 @@
 page-authorize-donor {
+
   @font-face{
     font-family: Quantico;
     src: url("../assets/fonts/Quantico")
@@ -22,6 +23,7 @@ page-authorize-donor {
 }
 .scroll-content{
     overflow-y:auto;
+padding-bottom: 0px !important;
 }
 .auth-page {
     .invalid {
@@ -67,9 +69,15 @@ page-authorize-donor {
         margin-bottom: 0px;
     }
     ion-icon::before {
-        // display: inline-block;
         color: #203e61;
     }
     .text-input{padding-left:10px}
   }
+  .item-ios ion-avatar ion-img, .item-ios ion-avatar img {
+    width: 76px;
+    height: 76px;
+}
+
+
+
 }

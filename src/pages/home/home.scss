@@ -18,18 +18,15 @@ page-home {
     }
     .content{
 
-            background-image: url("../../assets/imgs/RICHOUT ICON.png") !important;
+            // background-image: url("../../assets/imgs/RICHOUT ICON.png") !important;
             background-repeat: no-repeat !important;
-            background-size: 100% !important;
-            background-position-y: bottom !important;
+            background-size: cover !important;
+            background-position-y:  bottom !important;
+            background-position: center;
 
-        // background:url("../../assets/imgs/RICHOUT ICON.png") no-repeat,#f7f8f9 !important;
+            // position: relative;
+
+        background-image:url("../../assets/imgs/background.png") !important;
     }
-    // .content::before{
-    //     content:'';
-    //     position: absolute;
-    //     display: block;
-    //     // background-color: #f7f8f9 ;
 
-    // }
 }
