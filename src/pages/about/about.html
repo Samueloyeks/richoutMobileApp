@@ -1,6 +1,6 @@
 <ion-header style="background-color: #ffffff" no-border style="padding:0px">
-
-  <ion-navbar style="background-color: #ffffff;padding:0px;min-height: 46px;" no-border hideBackButton>
+  <ion-navbar style="background-color: #ffffff;padding:0px;min-height: 46px;"
+    no-border hideBackButton>
     <ion-buttons left style="background-color: #ffffff">
       <button navPop clear style="background-color: #ffffff">
         <img src="../../assets/imgs/option 2.png" height="29.5px" width="7px">
@@ -16,6 +16,77 @@
 
 </ion-header>
 
-<ion-content  class="content">
+<ion-content class="content">
+  <ion-segment [(ngModel)]="contact" color="primary" padding mode="ios">
+    <ion-segment-button value="faq" text-center>
+      <ion-row>
+        <ion-col>
+          <div style="text-align:center;text-align-last: end;"><strong><p
+                style="display:inline;-webkit-text-stroke: 1px" text-wrap>FAQ</p></strong></div>
+        </ion-col>
+        <ion-col no-padding>
+          <img src="../../assets/imgs/faq.png" style="float:left
+            ;width:27px;height: 27px;" id="img">
+        </ion-col>
+      </ion-row>
+    </ion-segment-button>
+
+    <ion-segment-button value="contactUs">
+      <ion-row>
+        <ion-col col-8>
+          <div style="text-align:center;text-align-last: end;"><strong><p
+                style="display:inline;-webkit-text-stroke: 1px" text-wrap>Contact
+                Us</p></strong></div>
+        </ion-col>
+        <ion-col no-padding col-4>
+          <img src="../../assets/imgs/contact.png" style="float:left
+            ;width:27px;height: 27px;" id="img">
+        </ion-col>
+      </ion-row>
+    </ion-segment-button>
+  </ion-segment>
+
+  <div [ngSwitch]="contact">
+    <div *ngSwitchCase="'faq'" padding id="outer">
+
+    </div>
+
+    <div *ngSwitchCase="'contactUs'" padding>
+      <div id="inner" style="text-align:center">
+        <form [formGroup]="contactForm" (submit)="contact()" novalidate>
+          <ion-item class="input" no-lines 
+            [class.invalid]="!contactForm.controls.email.valid
+            && contactForm.controls.email.touched"
+            [class.valid]="contactForm.controls.email.valid &&
+            contactForm.controls.email.touched">
+            <ion-input placeholder="Email" formControlName="email" type="email" 
+              autofill="off" style="background-color:#c4c4c461;height:35px;border-radius:1px;margin-top: 15px"></ion-input>
+          </ion-item>
+          <ion-item class="error-message"
+            *ngIf="!contactForm.controls.email.valid
+            &&
+            contactForm.controls.email.touched">
+            <p>Please enter a valid email address.</p>
+          </ion-item>
+          <!-- <br> -->
+          <ion-item class="input" no-lines>
+          <ion-input placeholder="Phone Number" formControlName="phone" type="text"
+            autofill="off" style="background-color:#c4c4c461;height:35px;border-radius:1px;margin-top: 15px"></ion-input>
+        </ion-item>
+        <!-- <br> -->
+        <ion-item class="input" no-lines>
+            <ion-textarea placeholder="Message..." formControlName="message" type="text" 
+              autofill="off" style="background-color:#c4c4c461;height:120px;border-radius:1px;margin-top: 15px"></ion-textarea>
+          </ion-item>
+           <ion-item no-lines style="text-align:center" id="buttonItem">
+                  <button ion-button color="brand2" type="submit" medium full
+                style="border-radius: 0px;height: 37px;
+                background: #ffa600;color: #203e61;font-size: 22px;box-shadow: 0px 6px
+                4px #0000004a !important;font-weight: bold">SUBMIT FORM</button>
+           </ion-item>
+        </form>
+      </div>
+    </div>
+  </div>
 
 </ion-content>

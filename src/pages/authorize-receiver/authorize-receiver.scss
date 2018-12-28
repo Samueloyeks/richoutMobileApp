@@ -3,9 +3,9 @@ page-authorize-receiver {
         font-family: Quantico;
         src: url("../assets/fonts/Quantico")
     }
-    *{
-        font-family:Quantico;
-    }
+    ion-title,h2,h4,ion-input,button,p{
+        font-family: Quantico
+      }
     ion-content{
         background-image: url("../../assets/imgs/bottom_image.png") ;
         background-repeat: no-repeat;
@@ -55,7 +55,7 @@ page-authorize-receiver {
       .input{
         padding-left:0px;
         border-radius: 1px;
-        background-color: #C4C4C4;
+        // background-color: #c4c4c461;
         ion-input{
             height: 39px;
         }

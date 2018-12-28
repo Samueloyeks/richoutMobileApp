@@ -28,28 +28,28 @@
     <h2 style="text-align:center;padding-top: 100px !important;font-weight:
       bold">LOGIN</h2><br>
     <form [formGroup]="loginForm" (submit)="logIn()" novalidate>
-      <ion-item class="input" [class.invalid]="!loginForm.controls.email.valid
+      <ion-item no-lines class="input" style="background-color:#c4c4c461;" [class.invalid]="!loginForm.controls.email.valid 
         && loginForm.controls.email.touched"
         [class.valid]="loginForm.controls.email.valid &&
         loginForm.controls.email.touched">
-        <ion-input placeholder="EMAIL" formControlName="email" type="email"
+        <ion-input placeholder="EMAIL" formControlName="email" type="email" 
           autofill="off"></ion-input>
       </ion-item>
       <ion-item class="error-message" *ngIf="!loginForm.controls.email.valid &&
         loginForm.controls.email.touched">
         <p>Please enter a valid email address.</p>
       </ion-item> <br>
-      <ion-item class="input"
-        [class.invalid]="!loginForm.controls.password.valid &&
+      <ion-item no-lines class="input" style="background-color:#c4c4c461;"
+        [class.invalid]="!loginForm.controls.password.valid && 
         loginForm.controls.password.touched"
         [class.valid]="loginForm.controls.password.valid &&
         loginForm.controls.password.touched">
-        <ion-input placeholder="PASSWORD" [type]="passwordType"
+        <ion-input placeholder="PASSWORD" [type]="passwordType" 
           formControlName="password"></ion-input>
         <ion-icon id="icon" [name]="passwordShown === true ? 'eye-off':'eye'"
           item-end
           color="primary" (click)="togglePassword()"></ion-icon>
-              </ion-item>
+      </ion-item>
       <ion-item class="error-message" *ngIf="!loginForm.controls.password.valid
         && loginForm.controls.password.touched">
         <p>Your password must be more than 6 characters.</p>
@@ -87,33 +87,33 @@
       </div>
     </ion-item>
 
-    <p style="text-align:center;margin: 2px" (click)="uploadpic()">Take Photo</p>
+    <p style="text-align:center;margin: 2px; font-family:Quantico" (click)="uploadpic()">Take Photo</p>
     <form [formGroup]="signupForm" (submit)="signUp()" novalidate>
-      <ion-item class="input">
-        <ion-input placeholder="FULL NAME" type="text"
-          formControlName="firstName"></ion-input>
+      <ion-item no-lines class="input" style="background-color:#c4c4c461;">
+        <ion-input placeholder="FULL NAME" type="text" 
+          formControlName="fullName"></ion-input>
       </ion-item><br>
-      <ion-item class="input">
-        <ion-input placeholder="PHONE NUMBER" type="text"
-          formControlName="lastName"></ion-input>
+      <ion-item no-lines class="input" style="background-color:#c4c4c461;">
+        <ion-input placeholder="PHONE NUMBER" type="text" 
+          formControlName="phone"></ion-input>
       </ion-item><br>
-      <ion-item class="input" [class.invalid]="!signupForm.controls.email.valid
+      <ion-item no-lines class="input" style="background-color:#c4c4c461;" [class.invalid]="!signupForm.controls.email.valid
         && signupForm.controls.email.touched"
         [class.valid]="signupForm.controls.email.valid &&
         signupForm.controls.email.touched">
-        <ion-input placeholder="EMAIL" formControlName="email" type="email">
+        <ion-input placeholder="EMAIL" formControlName="email" type="email" >
         </ion-input>
       </ion-item><br>
       <!-- <ion-item class="error-message" *ngIf="!signupForm.controls.email.valid &&
                   signupForm.controls.email.touched">
         <p>Please enter a valid email address.</p>
       </ion-item><br> -->
-      <ion-item class="input"
+      <ion-item no-lines class="input" style="background-color:#c4c4c461;"
         [class.invalid]="!signupForm.controls.password.valid &&
         signupForm.controls.password.touched"
         [class.valid]="signupForm.controls.password.valid &&
         signupForm.controls.password.touched">
-        <ion-input placeholder="PASSWORD" [type]="passwordType2"
+        <ion-input placeholder="PASSWORD" [type]="passwordType2" 
           formControlName="password"></ion-input>
         <ion-icon id="icon" [name]="passwordShown2 === true ? 'eye-off':'eye'"
           item-end
@@ -143,10 +143,11 @@
 
 </ion-content>
 
-<ion-footer no-border style="padding-bottom: 15px" class="hide-on-keyboard-open">
+<ion-footer no-border style="padding-bottom: 15px"
+  class="hide-on-keyboard-open">
 
   <ion-buttons end style="position:relative">
-    <div (click)="navigateToForgotPassword()" >
+    <div (click)="navigateToForgotPassword()">
       <img src="../../assets/imgs/image (3).png" float-right end
         style="padding-right:10px">
     </div>

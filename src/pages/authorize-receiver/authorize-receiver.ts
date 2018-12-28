@@ -122,7 +122,7 @@ export class AuthorizeReceiverPage {
       lastName: this.signupForm.value.lastName,
       email: this.signupForm.value.email,
       password: this.signupForm.value.password,
-      accountType: "donor",
+      accountType: "receiver",
 
     };
 

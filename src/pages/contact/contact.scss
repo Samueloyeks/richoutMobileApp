@@ -28,4 +28,34 @@ page-contact {
 
     background-image:url("../../assets/imgs/background.png") !important;
 }
+
+.segment-ios-primary .segment-button.segment-activated {
+    color: #203E61;
+    background-color: #BECBD8;
+    height: 41px;
+    border-radius: 3px;
+    border-color: #BECBD8;
+    p{font-size: large};
+    ion-row > ion-col > #img{width:36px !important;height: 36px !important;};
+}
+.segment-md-primary .segment-button.segment-activated {
+    color: #203E61;
+    background-color: #BECBD8;
+    height: 41px;
+    border-radius: 3px;
+    border-color: #BECBD8;
+    p{font-size: large};
+    ion-row > ion-col > #img{width:36px !important;height: 36px !important;};
+}
+
+.segment-ios-primary .segment-button {
+    border-color: #DAE7F4;
+    color: #203E61;
+    background-color: #DAE7F4;
+}
+.segment-md-primary .segment-button {
+    border-color: #DAE7F4;
+    color: #203E61;
+    background-color: #DAE7F4;
+}
 }

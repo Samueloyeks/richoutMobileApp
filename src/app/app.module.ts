@@ -21,6 +21,10 @@ import { AuthorizeDonorPage } from '../pages/authorize-donor/authorize-donor';
 import { AuthorizeReceiverPage } from '../pages/authorize-receiver/authorize-receiver';
 import { SignupModalPage } from '../pages/signup-modal/signup-modal';
 import { IonicImageViewerModule } from 'ionic-img-viewer';
+import { NativePageTransitions } from '@ionic-native/native-page-transitions';
+import { ApIserviceProvider } from '../providers/ap-iservice/ap-iservice';
+import { HTTP } from '@ionic-native/http';
+
 
 @NgModule({
   declarations: [
@@ -66,7 +70,10 @@ import { IonicImageViewerModule } from 'ionic-img-viewer';
     SplashScreen,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     FirebaseServiceProvider,
-    ProfileServiceProvider
+    ProfileServiceProvider,
+    NativePageTransitions,
+    ApIserviceProvider,
+    HTTP,
   ]
 })
 export class AppModule { }

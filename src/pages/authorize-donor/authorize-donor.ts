@@ -11,6 +11,10 @@ import { TabsPage } from '../tabs/tabs';
 import { LandingPage } from '../landing/landing';
 import { SignupModalPage } from '../signup-modal/signup-modal';
 import { Camera } from "@ionic-native/camera";
+import { NativePageTransitions, NativeTransitionOptions } from '@ionic-native/native-page-transitions';
+import { HTTP } from '@ionic-native/http';
+import { ApIserviceProvider } from '../../providers/ap-iservice/ap-iservice';
+
 
 
 
@@ -36,10 +40,11 @@ export class AuthorizeDonorPage {
   public base64Image: string = null;
 
 
-  constructor(formBuilder: FormBuilder, public menuCtrl: MenuController, public firebaseService: FirebaseServiceProvider,
+  constructor(public apiService: ApIserviceProvider, private http: HTTP, formBuilder: FormBuilder, public menuCtrl: MenuController, public firebaseService: FirebaseServiceProvider,
     public FirebaseService: FirebaseServiceProvider, public navCtrl: NavController,
     public navParams: NavParams, public loadingCtrl: LoadingController, public alertCtrl: AlertController,
-    public toastCtrl: ToastController, public actionSheetCtrl: ActionSheetController, public camera: Camera, public modal: ModalController) {
+    public toastCtrl: ToastController, public actionSheetCtrl: ActionSheetController, public camera: Camera,
+    public modal: ModalController, private nativePageTransitions: NativePageTransitions) {
     this.menuCtrl.enable(false, 'myMenu');
     this.login = "Login";
     this.loginForm = formBuilder.group({
@@ -47,8 +52,8 @@ export class AuthorizeDonorPage {
       password: ['', Validators.compose([Validators.required, Validators.minLength(6)])]
     });
     this.signupForm = formBuilder.group({
-      firstName: [''],
-      lastName: [''],
+      fullName: [''],
+      phone: [''],
       email: ['', Validators.compose([Validators.required, EmailValidator.isValid])],
       password: ['', Validators.compose([Validators.required, Validators.minLength(6)])],
     });
@@ -123,49 +128,48 @@ export class AuthorizeDonorPage {
   }
 
   async signUp(): Promise<void> {
+    let headers = new Headers();
+    headers.append("Content-Type", "application/json");
     var account = {
-      firstName: this.signupForm.value.firstName,
-      lastName: this.signupForm.value.lastName,
+      fullName: this.signupForm.value.fullName,
+      phone: this.signupForm.value.phone,
       email: this.signupForm.value.email,
       password: this.signupForm.value.password,
       accountType: "donor",
-
     };
 
     console.log(account);
     if (!this.signupForm.valid) {
-
-      const signupModal: Modal = this.modal.create(SignupModalPage, {}, { showBackdrop: true, enableBackdropDismiss: true });
-      signupModal.present();
+      const Alert = this.alertCtrl.create({
+        message: 'Please complete form',
+        buttons: [
+          { text: 'Ok', role: 'cancel' },
+        ]
+      });
+      Alert.present();
       console.log(`Form is not valid yet, current value: ${this.signupForm.value}`);
     } else {
       var loader = this.loadingCtrl.create({ content: "Please wait..." });
       loader.present();
-      this.FirebaseService.signupUserService(account).then(() => {
-        loader.dismiss().then(() => {
-          this.navCtrl.setRoot(HomePage);
-        })
-        const Alert = this.alertCtrl.create({
-          message: 'A confirmation email has been sent to your email address',
-          buttons: [
-            { text: 'Cancel', role: 'cancel' },
-            {
-              text: 'Ok',
-              role: 'cancel'
-            }
-          ]
+      this.http.post(this.apiService.baseURL + 'users/register', JSON.stringify(account),{})
+        .then(data => {
+          console.log(this.apiService.baseURL + 'users/register');
+          console.log(data);
+          console.log(data.data); // data received by server
+          console.log(data.headers);
+          loader.dismiss();
+          const signupModal: Modal = this.modal.create(SignupModalPage, {}, { showBackdrop: true, enableBackdropDismiss: true });
+          signupModal.present();
+
+
+
+        }).catch(error => {
+          console.log(this.apiService.baseURL + 'users/register');
+          console.log(error);
+          console.log(error.error); // error message as string
+          console.log(error.headers);
+
         });
-        Alert.present();
-      }, error => {
-        loader.dismiss();
-        //unable to log in
-        let toast = this.toastCtrl.create({
-          message: error,
-          duration: 3000,
-          position: 'top'
-        });
-        toast.present();
-      });
     }
 
 
@@ -184,10 +188,17 @@ export class AuthorizeDonorPage {
     this.navCtrl.push(ResetPasswordPage);
   }
   goToLanding() {
-    this.navCtrl.setRoot(LandingPage)
+    // let options: NativeTransitionOptions = {
+    //   direction: 'up',
+    //   duration: 600
+    //  };
+    // this.nativePageTransitions.curl(options);
+    this.nativePageTransitions.fade(null);
+    this.navCtrl.setRoot(LandingPage);
   }
 
- 
+
+
   async uploadpic() {
     let actionSheet = this.actionSheetCtrl.create({
       title: "Select Image Source",
@@ -233,7 +244,7 @@ export class AuthorizeDonorPage {
       });
       this.loading.present();
       this.base64Image = 'data:image/jpeg;base64,' + imageData;
-      this.selectedPhoto  = this.dataURItoBlob('data:image/jpeg;base64,' + imageData);
+      this.selectedPhoto = this.dataURItoBlob('data:image/jpeg;base64,' + imageData);
       this.loading.dismiss();
 
     }, (err) => {
@@ -247,9 +258,9 @@ export class AuthorizeDonorPage {
     for (let i = 0; i < binary.length; i++) {
       array.push(binary.charCodeAt(i));
     }
-    return new Blob([new Uint8Array(array)], {type: 'image/jpeg'});
+    return new Blob([new Uint8Array(array)], { type: 'image/jpeg' });
   };
- 
+
 
 
 

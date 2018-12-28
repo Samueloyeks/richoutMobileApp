@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController, AlertController } from 'ionic-angular';
+import { HomePage } from '../home/home';
 
 /**
  * Generated class for the SignupModalPage page.
@@ -15,7 +16,7 @@ import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angul
 })
 export class SignupModalPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,public view:ViewController) {
+  constructor(public alertCtrl:AlertController,public navCtrl: NavController, public navParams: NavParams,public view:ViewController) {
   }
 
   ionViewDidLoad() {
@@ -24,6 +25,18 @@ export class SignupModalPage {
 
   dismissModal(){
     this.view.dismiss();
+    this.navCtrl.setRoot(HomePage);
+    const Alert = this.alertCtrl.create({
+          message: 'A confirmation email has been sent to your email address',
+          buttons: [
+            { text: 'Cancel', role: 'cancel' },
+            {
+              text: 'Ok',
+              role: 'cancel'
+            }
+          ]
+        });
+        Alert.present();
   }
 
 }
