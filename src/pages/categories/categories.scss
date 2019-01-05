@@ -1,0 +1,32 @@
+page-categories {
+    @font-face{
+        font-family: Quantico;
+        src: url("../assets/fonts/Quantico")
+    }
+    ion-title,h2,h4,ion-input,button,p{
+        font-family:Quantico;
+    }
+    .toolbar-background{
+        background-color: #FFFFFF;
+    }
+    .toolbar-title-ios {
+        text-align:right;
+    }
+    .toolbar-ios ion-title {
+        padding-right: 55px;
+        background-color: #FFFFFF;
+    }
+    .content{
+
+            // background-image: url("../../assets/imgs/RICHOUT ICON.png") !important;
+            background-repeat: no-repeat !important;
+            background-size: cover !important;
+            background-position-y:  bottom !important;
+            background-position: center;
+
+            // position: relative;
+
+        background-image:url("../../assets/imgs/background.png") !important;
+    }
+
+}

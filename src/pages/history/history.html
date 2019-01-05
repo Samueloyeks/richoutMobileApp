@@ -1,0 +1,32 @@
+ <ion-header style="background-color: #ffffff" no-border style="padding:0px">
+  <ion-navbar style="background-color: #ffffff;padding:0px;min-height: 46px;"
+    no-border hideBackButton>
+    <ion-buttons left style="background-color: #ffffff">
+      <button (click)="goBack()" clear style="background-color: #ffffff">
+        <img src="../../assets/imgs/Group@2x.png" height="27px" width="21px">
+      </button>
+    </ion-buttons>
+
+    <ion-title style="text-align:right !important" *ngIf="accountType
+      =='donor'">DONATIONS</ion-title>
+    <ion-title style="text-align:right !important" *ngIf="accountType
+      =='receiver'">REQUESTS</ion-title>
+    <ion-buttons right style="margin:0px" end>
+      <img src="../../assets/imgs/Group 4.png" float-right end>
+    </ion-buttons>
+
+  </ion-navbar>
+
+</ion-header>
+<ion-content class="content">
+  <p style="-webkit-text-stroke: 1px;font-size: large;margin-top: 2px" text-wrap
+    padding>History</p>
+
+
+
+
+  <ion-fab right bottom>
+    <button ion-fab style="background: #ffa600;color: white;margin-bottom:
+      15px;margin-right: 10px;" (click)="goToCategories()"><ion-icon name="add"></ion-icon></button>
+  </ion-fab>
+</ion-content>

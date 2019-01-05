@@ -2,14 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, MenuController } from 'ionic-angular';
 import { AuthorizeDonorPage } from '../authorize-donor/authorize-donor';
 import { AuthorizeReceiverPage } from '../authorize-receiver/authorize-receiver';
+import { DbProvider } from '../../providers/db/db';
 
-/**
- * Generated class for the LandingPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
- 
 @IonicPage()
 @Component({
   selector: 'page-landing',
@@ -17,8 +11,9 @@ import { AuthorizeReceiverPage } from '../authorize-receiver/authorize-receiver'
 })
 export class LandingPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,public menuCtrl:MenuController) {
+  constructor(public db:DbProvider,public navCtrl: NavController, public navParams: NavParams,public menuCtrl:MenuController) {
     this.menuCtrl.enable(false, 'myMenu');
+
   } 
 
   gotoAuthDonor(){ 
@@ -29,7 +24,16 @@ export class LandingPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad LandingPage');
+    // console.log(this.db.create("userInfo.gender","male")); 
+    // console.log(this.db.get("userInfo.gender")); 
+    // console.log(this.db.set("userInfo.fullName","Sam")); 
+    // console.log(this.db.get("userInfo.fullName")); 
+    // console.log(this.db.get("userInfo")); 
+
+    // console.log(this.db.set("randomObj",{name:"sam"})); 
+    // console.log(this.db.get("randomObj")); 
+
+
   }
 
 }

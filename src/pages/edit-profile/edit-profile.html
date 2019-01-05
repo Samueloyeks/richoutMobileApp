@@ -1,0 +1,48 @@
+<ion-header style="background-color: #ffffff" no-border style="padding:0px">
+
+  <ion-navbar style="background-color: #ffffff;padding:0px;min-height: 46px;" no-border hideBackButton>
+    <ion-buttons left style="background-color: #ffffff">
+      <button navPop clear style="background-color: #ffffff">
+        <img src="../../assets/imgs/Group@2x.png" height="27px" width="21px">
+      </button>
+    </ion-buttons>
+
+    <ion-title style="text-align:right !important">EDIT PROFILE</ion-title>
+    <ion-buttons right style="margin:0px" end>
+      <img src="../../assets/imgs/Group 4.png" float-right end>
+    </ion-buttons>
+
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content  class="content">
+    <div style="text-align:center;margin-top: 20px;">
+        <img src="../../assets/imgs/user2.png" style="width: 150px;height:150px;">
+      </div><br>
+    
+    <div style="text-align:center"> 
+   <form [formGroup]="profileForm" (submit)="updateProfile()" novalidate>
+    <ion-item no-lines style="background-color:#f6f8f8">
+      <ion-input class="input"  value={{fullName}} formControlName="fullName" type="text"
+        autofill="off" style="background-color:#c4c4c461;height:35px;border-radius:1px;margin-top: 15px"></ion-input>
+    </ion-item>
+    <ion-item  no-lines style="background-color:#f6f8f8">
+      <ion-input class="input"  value={{phoneNumber}} formControlName="phoneNumber" type="text"
+        autofill="off" style="background-color:#c4c4c461;height:35px;border-radius:1px;margin-top: 15px"></ion-input>
+    </ion-item>
+    <ion-item  no-lines style="background-color:#f6f8f8">
+      <ion-input class="input"  value={{email}} formControlName="email" type="text"
+        autofill="off" style="background-color:#c4c4c461;height:35px;border-radius:1px;margin-top: 15px"></ion-input>
+    </ion-item>
+    <ion-item  no-lines style="background-color:#f6f8f8" (click)="updatePassword()">
+      <ion-input class="input" disabled="true" placeholder="****** "  
+        autofill="off" style="background-color:#c4c4c461;height:35px;border-radius:1px;margin-top: 15px"></ion-input>
+    </ion-item><br>
+  
+    <button ion-button color="brand2" type="submit" full  style="border-radius: 0px;height: 37px;width:80%;margin-left:auto;margin-right:auto;
+    background: #ffa600;color: #203e61;font-size: 22px;box-shadow: 0px 6px 4px #0000004a;font-weight: bold;" type = "submit">SAVE</button>
+   </form>
+    </div>
+</ion-content> 

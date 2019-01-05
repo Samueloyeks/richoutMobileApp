@@ -84,6 +84,7 @@
     <plugin name="ionic-plugin-keyboard" spec="^2.2.1" />
     <plugin name="com.telerik.plugins.nativepagetransitions" spec="0.6.5" />
     <plugin name="cordova-plugin-advanced-http" spec="2.0.2" />
-    <engine name="android" spec="7.1.4" />
-    <engine name="ios" spec="4.5.5" />
+    <plugin name="com-badrit-base64" spec="0.2.0" />
+    <engine name="android" spec="^7.1.4" />
+    <engine name="ios" spec="^4.5.5" />
 </widget>

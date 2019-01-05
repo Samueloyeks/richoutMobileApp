@@ -8,7 +8,7 @@
   <ion-navbar style="background-color: #ffffff;padding:0px;min-height: 46px;"
     no-border hideBackButton>
     <ion-buttons left style="background-color: #ffffff">
-      <button (click)="goToLanding()" clear style="background-color: #ffffff">
+      <button (click)="goBack()"  clear style="background-color: #ffffff">
         <img src="../../assets/imgs/Group@2x.png" height="27px" width="21px">
       </button>
     </ion-buttons>
@@ -91,7 +91,7 @@
     <form [formGroup]="signupForm" (submit)="signUp()" novalidate>
       <ion-item no-lines class="input" style="background-color:#c4c4c461;">
         <ion-input placeholder="FULL NAME" type="text" 
-          formControlName="fullName"></ion-input>
+          formControlName="fullName"></ion-input> 
       </ion-item><br>
       <ion-item no-lines class="input" style="background-color:#c4c4c461;">
         <ion-input placeholder="PHONE NUMBER" type="text" 

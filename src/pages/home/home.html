@@ -8,7 +8,10 @@
       </button>
     </ion-buttons>
 
-    <ion-title style="text-align:right !important">DONATIONS</ion-title>
+    <ion-title style="text-align:right !important" *ngIf="accountType
+      =='donor'">DONATIONS</ion-title>
+    <ion-title style="text-align:right !important" *ngIf="accountType
+      =='receiver'">REQUESTS</ion-title>
     <ion-buttons right style="margin:0px" end>
       <img src="../../assets/imgs/Group 4.png" float-right end>
     </ion-buttons>
@@ -17,49 +20,122 @@
 
 </ion-header>
 <ion-content class="content">
-  <ion-row>
-    <ion-col>
-      <ion-card>
-        <ion-card-content>
-          <ion-row>
-            <ion-col col-2></ion-col>
-            <ion-col col-8>
-              <img src="../../assets/imgs/user2.png" style="width:84px
-                !important;height:84px">
-            </ion-col>
-            <ion-col col-2></ion-col>
-          </ion-row>
-          <div style="text-align:center">
-            <p style="text-align:center" text-wrap>Donate to someone in need</p>
-            <button ion-button color="brand2" type="submit" medium
-              style="border-radius: 0px;height: 18px;width:108px;
-              background: #ffa600;color: #203e61;box-shadow: 0px 6px 4px
-              #0000004a;font-weight: bold">Donate</button>
-          </div>
-        </ion-card-content>
-      </ion-card>
+  <ion-row style="height:90%">
+    <ion-col col-1 style="margin-top:70%" >
+      <img src="../../assets/imgs/slideBackButton.png" (click)="prev()">
     </ion-col>
-    <ion-col>
-      <ion-card>
-        <ion-card-content>
+    <ion-col col-10 no-padding>
+      <ion-slides #slides #slideWithNav autoplay="5000" loop="true" speed="500"
+        pager="true">
+        <ion-slide>
           <ion-row>
-            <ion-col col-2></ion-col>
-            <ion-col col-8>
-              <img src="../../assets/imgs/user2.png" style="width:84px
-                !important;height:84px">
+            <ion-col col-6>
+              <ion-card>
+                <ion-card-content>
+                  <ion-row>
+                    <ion-col col-2></ion-col>
+                    <ion-col col-8>
+                      <img src="../../assets/imgs/user2.png" style="width:84px
+                        !important;height:84px">
+                    </ion-col>
+                    <ion-col col-2></ion-col>
+                  </ion-row>
+                  <div style="text-align:center">
+                    <p style="text-align:center" text-wrap>Donate to someone in
+                      need</p>
+                    <button ion-button color="brand2" type="submit" medium
+                      style="border-radius: 0px;height: 18px;width:108px;
+                      background: #ffa600;color: #203e61;box-shadow: 0px 6px 4px
+                      #0000004a;font-weight: bold">Donate</button>
+                  </div>
+                </ion-card-content>
+              </ion-card>
             </ion-col>
-            <ion-col col-2></ion-col>
+
+            <ion-col col-6>
+              <ion-card>
+                <ion-card-content>
+                  <ion-row>
+                    <ion-col col-2></ion-col>
+                    <ion-col col-8>
+                      <img src="../../assets/imgs/user2.png" style="width:84px
+                        !important;height:84px">
+                    </ion-col>
+                    <ion-col col-2></ion-col>
+                  </ion-row>
+                  <div style="text-align:center">
+                    <p style="text-align:center" text-wrap>Donate to someone in
+                      need</p>
+                    <button ion-button color="brand2" type="submit" medium
+                      style="border-radius: 0px;height: 18px;width:108px;
+                      background: #ffa600;color: #203e61;box-shadow: 0px 6px 4px
+                      #0000004a;font-weight: bold">Donate</button>
+                  </div>
+                </ion-card-content>
+              </ion-card>
+            </ion-col>
           </ion-row>
-          <div style="text-align:center">
-            <p style="text-align:center" text-wrap>Donate to someone in need</p>
-            <button ion-button color="brand2" type="submit" medium
-              style="border-radius: 0px;height: 18px;width:108px;
-              background: #ffa600;color: #203e61;box-shadow: 0px 6px 4px
-              #0000004a;font-weight: bold">Donate</button>
-          </div>
-        </ion-card-content>
-      </ion-card>
+        </ion-slide>
+
+
+        <ion-slide>
+          <ion-row>
+            <ion-col col-6>
+              <ion-card>
+                <ion-card-content>
+                  <ion-row>
+                    <ion-col col-2></ion-col>
+                    <ion-col col-8>
+                      <img src="../../assets/imgs/user2.png" style="width:84px
+                        !important;height:84px">
+                    </ion-col>
+                    <ion-col col-2></ion-col>
+                  </ion-row>
+                  <div style="text-align:center">
+                    <p style="text-align:center" text-wrap>Donate to someone in
+                      need</p>
+                    <button ion-button color="brand2" type="submit" medium
+                      style="border-radius: 0px;height: 18px;width:108px;
+                      background: #ffa600;color: #203e61;box-shadow: 0px 6px 4px
+                      #0000004a;font-weight: bold">Donate</button>
+                  </div>
+                </ion-card-content>
+              </ion-card>
+            </ion-col>
+            <ion-col col-6>
+              <ion-card>
+                <ion-card-content>
+                  <ion-row>
+                    <ion-col col-2></ion-col>
+                    <ion-col col-8>
+                      <img src="../../assets/imgs/user2.png" style="width:84px
+                        !important;height:84px">
+                    </ion-col>
+                    <ion-col col-2></ion-col>
+                  </ion-row>
+                  <div style="text-align:center">
+                    <p style="text-align:center" text-wrap>Donate to someone in
+                      need</p>
+                    <button ion-button color="brand2" type="submit" medium
+                      style="border-radius: 0px;height: 18px;width:108px;
+                      background: #ffa600;color: #203e61;box-shadow: 0px 6px 4px
+                      #0000004a;font-weight: bold">Donate</button>
+                  </div>
+                </ion-card-content>
+              </ion-card>
+            </ion-col>
+          </ion-row>
+        </ion-slide>
+        <!-- <button type="submit" float-left ion-button  color="primary" class="btnPrev" (click)="prev()">Prev</button>
+  <button type="submit" float-right ion-button color="primary" class="btnNext" >Next</button> -->
+      </ion-slides>
+    </ion-col>
+    <ion-col col-1 style="margin-top:70%">
+      <img src="../../assets/imgs/slideForwardButton.png" (click)="next()">
     </ion-col>
   </ion-row>
-
+  <ion-row style="height:10%;padding-left: 16px;padding-right: 16px" >
+      <button ion-button color="brand2"  medium full (click)="goToHistory()" style="border-radius: 0px;height: 37px;
+      background: #ffa600;color: #203e61;font-size: 22px;box-shadow: 0px 6px 4px #0000004a" >MAKE A DONATION</button>
+  </ion-row>
 </ion-content>

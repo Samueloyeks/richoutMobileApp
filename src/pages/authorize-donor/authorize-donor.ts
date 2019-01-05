@@ -14,6 +14,11 @@ import { Camera } from "@ionic-native/camera";
 import { NativePageTransitions, NativeTransitionOptions } from '@ionic-native/native-page-transitions';
 import { HTTP } from '@ionic-native/http';
 import { ApIserviceProvider } from '../../providers/ap-iservice/ap-iservice';
+import { Base64 } from '@ionic-native/base64';
+import { DbProvider } from '../../providers/db/db';
+// import { Http, Headers, RequestOptions } from '@angular/common/http';
+// import { HttpClient } from '@angular/common/http';
+
 
 
 
@@ -40,7 +45,8 @@ export class AuthorizeDonorPage {
   public base64Image: string = null;
 
 
-  constructor(public apiService: ApIserviceProvider, private http: HTTP, formBuilder: FormBuilder, public menuCtrl: MenuController, public firebaseService: FirebaseServiceProvider,
+  constructor(public db: DbProvider, private base64: Base64, public apiService: ApIserviceProvider, private http: HTTP, formBuilder: FormBuilder, 
+    public menuCtrl: MenuController, public firebaseService: FirebaseServiceProvider,
     public FirebaseService: FirebaseServiceProvider, public navCtrl: NavController,
     public navParams: NavParams, public loadingCtrl: LoadingController, public alertCtrl: AlertController,
     public toastCtrl: ToastController, public actionSheetCtrl: ActionSheetController, public camera: Camera,
@@ -79,60 +85,114 @@ export class AuthorizeDonorPage {
   }
 
   async logIn(): Promise<void> {
-    // var that = this;
+    var userAuthDetails = {
+      email: this.loginForm.value.email,
+      password: this.loginForm.value.password,
+    };
 
-    // if (!this.loginForm.valid) {
-    //   const Alert = this.alertCtrl.create({
-    //     message: 'Please enter email and password',
-    //     buttons: [
-    //       { text: 'Ok', role: 'cancel' },
-    //     ]
-    //   });
-    //   Alert.present();
-    // } else {
-    //   var loader = this.loadingCtrl.create({
-    //     content: "Please Wait..."
-    //   });
-    //   loader.present();
+    if (!this.loginForm.valid) {
+      const Alert = this.alertCtrl.create({
+        message: 'Please enter email and password',
+        buttons: [
+          { text: 'Ok', role: 'cancel' },
+        ]
+      });
+      Alert.present();
+    } else {
+      var loader = this.loadingCtrl.create({
+        content: "Please Wait..."
+      });
+      loader.present();
+ 
+      const notDonor = this.alertCtrl.create({
+        message: 'This account is not a donor account',
+        buttons: [
+          { text: 'Cancel', role: 'cancel' },
+          {
+            text: 'Ok',
+            role: 'cancel'
+          }
+        ]
+      });
+      const notVerified = this.alertCtrl.create({
+        message: 'Please verify email first',
+        buttons: [
+          { text: 'Ok', role: 'cancel' },
+        ]
+      });
+      let toast = this.toastCtrl.create({
+        message: "The password is invalid or the user does not have a password",
+        duration: 3000,
+        position: 'top'
+      });
+      const navCtrl = this.navCtrl;
 
-    //   const email = this.loginForm.value.email;
-    //   const password = this.loginForm.value.password;
 
-    //   this.FirebaseService.loginUserService(email, password).then((authData: any) => {
-    //     console.log(authData.user);
-    //     if (authData.user.emailVerified) {
-    //       loader.dismiss();
-    this.navCtrl.setRoot(TabsPage);
-    //     } else {
-    //       loader.dismiss();
-    //       that.navCtrl.setRoot(AuthorizeDonorPage);
-    //       const Alert = this.alertCtrl.create({
-    //         message: 'Please verify email first',
-    //         buttons: [
-    //           { text: 'Ok', role: 'cancel' },
-    //         ]
-    //       });
-    //       Alert.present();
-    //     }
+      var db = this.db;
+      this.apiService.fetch('users/login',userAuthDetails)
+        .then(function (response) {
+          // Handle response we get from the API 
+          response.json().then(function (data) {
+            console.log(data)
+            console.log(data.data);
+            console.log(data.message)
+            console.log(data.data["fullName"])
 
-    //   }, error => {
-    //     loader.dismiss();
-    //     let toast = this.toastCtrl.create({
-    //       message: "Sorry You're not registered",
-    //       duration: 3000,
-    //       position: 'top'
-    //     });
-    //     toast.present();
-    //   });
-    // }
+            if (data.status == "success") {
+              if (data.data["accountType"] == "donor") {
+                // if (data.data["verified"] == true) {
+                db.set("userInfo", data.data);
+                loader.dismiss();
+                navCtrl.setRoot(TabsPage, { uid: data.data["uid"] });
+                // } else {
+                //   notVerified.present();
+                //   loader.dismiss();
+                // }
+              } else {
+                notDonor.present();
+                loader.dismiss();
+              }
+
+            } else {
+              if (data.data["verified"] == false) {
+                notVerified.present();
+                loader.dismiss();
+              } else if(data.message == "The password is invalid or the user does not have a password.") {
+                loader.dismiss();
+                //  Tell user why they can't be registered
+                toast.present();
+              }else{
+                loader.dismiss();
+              }
+
+            }
+          });
+
+        }).catch((error) => {
+          this.showAlert('error');
+          loader.dismiss();
+        });
+    }
   }
+  showAlert(msg){
+    var customAlert = this.alertCtrl.create({
+      message: msg,
+      buttons: [
+        { text: 'Cancel', role: 'cancel' },
+        {
+          text: 'Ok',
+          role: 'cancel'
+        }
+      ]
+    });
+    customAlert.present();
+  }
+  
 
   async signUp(): Promise<void> {
-    let headers = new Headers();
-    headers.append("Content-Type", "application/json");
     var account = {
       fullName: this.signupForm.value.fullName,
-      phone: this.signupForm.value.phone,
+      phoneNumber: this.signupForm.value.phone,
       email: this.signupForm.value.email,
       password: this.signupForm.value.password,
       accountType: "donor",
@@ -151,24 +211,44 @@ export class AuthorizeDonorPage {
     } else {
       var loader = this.loadingCtrl.create({ content: "Please wait..." });
       loader.present();
-      this.http.post(this.apiService.baseURL + 'users/register', JSON.stringify(account),{})
-        .then(data => {
-          console.log(this.apiService.baseURL + 'users/register');
-          console.log(data);
-          console.log(data.data); // data received by server
-          console.log(data.headers);
+      const signupModal: Modal = this.modal.create(SignupModalPage, {}, { showBackdrop: true, enableBackdropDismiss: true });
+  
+      const navCtrl = this.navCtrl;
+
+      var db = this.db;
+
+      this.apiService.fetch('users/register',account)
+        .then(function (response) {
+          // Handle response we get from the API
+          response.json().then(function (data) {
+            console.log(data)
+            console.log(data.data);
+            console.log(data.message)
+            console.log(data.data["fullName"])
+
+            if (data.status == "success") {
+              //  if(data.data["accountType"] =="donor"){
+              db.set("userInfo", data.data);
+              loader.dismiss();
+              signupModal.onWillDismiss(() => {
+                navCtrl.setRoot(TabsPage, { uid: data.data["uid"] });
+                // this.dataFromModal = data;
+              });
+              signupModal.present();
+
+              //  }else{
+              //   notDonor.present();
+              //  }
+
+            } else {
+              loader.dismiss();
+              //  Tell user why they can't be registered
+            }
+          });
+
+        }).catch(function (error) {
+          this.showAlert('error');
           loader.dismiss();
-          const signupModal: Modal = this.modal.create(SignupModalPage, {}, { showBackdrop: true, enableBackdropDismiss: true });
-          signupModal.present();
-
-
-
-        }).catch(error => {
-          console.log(this.apiService.baseURL + 'users/register');
-          console.log(error);
-          console.log(error.error); // error message as string
-          console.log(error.headers);
-
         });
     }
 
@@ -187,14 +267,17 @@ export class AuthorizeDonorPage {
   navigateToForgotPassword() {
     this.navCtrl.push(ResetPasswordPage);
   }
-  goToLanding() {
-    // let options: NativeTransitionOptions = {
-    //   direction: 'up',
-    //   duration: 600
-    //  };
-    // this.nativePageTransitions.curl(options);
-    this.nativePageTransitions.fade(null);
-    this.navCtrl.setRoot(LandingPage);
+  // goToLanding() {
+  //   // let options: NativeTransitionOptions = {
+  //   //   direction: 'up',
+  //   //   duration: 600
+  //   //  };
+  //   // this.nativePageTransitions.curl(options);
+  //   this.nativePageTransitions.fade(null);
+  //   this.navCtrl.setRoot(LandingPage);
+  // }
+  goBack(){
+    this.navCtrl.pop();
   }
 
 

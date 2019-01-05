@@ -28,5 +28,9 @@ page-home {
 
         background-image:url("../../assets/imgs/background.png") !important;
     }
+    ion-slide.swiper-slide {
+        align-items: flex-start;
+    }
+
 
 }

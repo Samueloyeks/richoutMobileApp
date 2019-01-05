@@ -1,7 +1,7 @@
-<ion-tabs >
-  <ion-tab [root]="tab1Root" tabIcon="donate"><div></div></ion-tab>
-  <ion-tab [root]="tab2Root" tabIcon="profile"></ion-tab>
-  <ion-tab [root]="tab3Root" tabIcon="help"></ion-tab>
-  <ion-tab [root]="tab4Root" tabIcon="about"></ion-tab>
+<ion-tabs selectedIndex="1">
+  <ion-tab [root]="tab1Root" tabIcon="donate" [rootParams]="uid"><div></div></ion-tab>
+  <ion-tab [root]="tab2Root" tabIcon="profile" [rootParams]="uid"></ion-tab>
+  <ion-tab [root]="tab3Root" tabIcon="help" [rootParams]="uid"></ion-tab>
+  <ion-tab [root]="tab4Root" tabIcon="about" [rootParams]="uid"></ion-tab>
 </ion-tabs>
   

@@ -1,19 +1,21 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, AlertController, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, AlertController, ToastController, ActionSheetController, ModalController, Modal, Loading } from 'ionic-angular';
 import { ResetPasswordPage } from '../reset-password/reset-password';
 import { FirebaseServiceProvider } from '../../providers/firebase-service/firebase-service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EmailValidator } from '../../validators/email';
 import { MenuController } from 'ionic-angular';
 import { HomePage } from '../home/home';
-import { LandingPage } from '../landing/landing';
+import * as $ from "jquery"
 import { TabsPage } from '../tabs/tabs';
-/**
- * Generated class for the AuthorizeReceiverPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { LandingPage } from '../landing/landing';
+import { SignupModalPage } from '../signup-modal/signup-modal';
+import { Camera } from "@ionic-native/camera";
+import { NativePageTransitions, NativeTransitionOptions } from '@ionic-native/native-page-transitions';
+import { HTTP } from '@ionic-native/http';
+import { ApIserviceProvider } from '../../providers/ap-iservice/ap-iservice';
+import { Base64 } from '@ionic-native/base64';
+import { DbProvider } from '../../providers/db/db';
 
 @IonicPage()
 @Component({
@@ -22,7 +24,7 @@ import { TabsPage } from '../tabs/tabs';
 })
 export class AuthorizeReceiverPage {
   public loginForm: FormGroup;
-  public signupForm: FormGroup; 
+  public signupForm: FormGroup;
   passwordType: string = 'password';
   passwordShown: boolean = false;
   passwordType2: string = 'password';
@@ -30,10 +32,14 @@ export class AuthorizeReceiverPage {
   login;
   hideSignupForm: boolean = true;
   hideLoginForm: boolean = false;
-  constructor(formBuilder: FormBuilder, public menuCtrl: MenuController, public firebaseService: FirebaseServiceProvider,
+  public loading: Loading;
+  selectedPhoto;
+  public base64Image: string = null;
+  constructor(public db: DbProvider, private base64: Base64, public apiService: ApIserviceProvider, private http: HTTP, formBuilder: FormBuilder, public menuCtrl: MenuController, public firebaseService: FirebaseServiceProvider,
     public FirebaseService: FirebaseServiceProvider, public navCtrl: NavController,
     public navParams: NavParams, public loadingCtrl: LoadingController, public alertCtrl: AlertController,
-    public toastCtrl: ToastController) {
+    public toastCtrl: ToastController, public actionSheetCtrl: ActionSheetController, public camera: Camera,
+    public modal: ModalController, private nativePageTransitions: NativePageTransitions) {
 
     this.login = "Login";
     this.loginForm = formBuilder.group({
@@ -41,8 +47,8 @@ export class AuthorizeReceiverPage {
       password: ['', Validators.compose([Validators.required, Validators.minLength(6)])]
     });
     this.signupForm = formBuilder.group({
-      firstName: [''],
-      lastName: [''],
+      fullName: [''],
+      phone: [''],
       email: ['', Validators.compose([Validators.required, EmailValidator.isValid])],
       password: ['', Validators.compose([Validators.required, Validators.minLength(6)])],
     });
@@ -56,7 +62,7 @@ export class AuthorizeReceiverPage {
     } else {
       this.passwordShown = true;
       this.passwordType = 'string';
-    } 
+    }
   }
   public togglePassword2() {
     if (this.passwordShown2) {
@@ -68,62 +74,102 @@ export class AuthorizeReceiverPage {
     }
   }
   async logIn(): Promise<void> {
-    // var that = this;
+    var userAuthDetails = {
+      email: this.loginForm.value.email,
+      password: this.loginForm.value.password,
+    };
 
-    // if (!this.loginForm.valid) {
-    //   const Alert = this.alertCtrl.create({
-    //     message: 'Please enter email and password',
-    //     buttons: [
-    //       { text: 'Ok', role: 'cancel' },
-    //     ]
-    //   });
-    //   Alert.present();
-    // } else {
-    //   var loader = this.loadingCtrl.create({
-    //     content: "Please Wait..."
-    //   });
-    //   loader.present();
+    if (!this.loginForm.valid) {
+      const Alert = this.alertCtrl.create({
+        message: 'Please enter email and password',
+        buttons: [
+          { text: 'Ok', role: 'cancel' },
+        ]
+      });
+      Alert.present();
+    } else {
+      var loader = this.loadingCtrl.create({
+        content: "Please Wait..."
+      });
+      loader.present();
 
-    //   const email = this.loginForm.value.email;
-    //   const password = this.loginForm.value.password;
 
-    //   this.FirebaseService.loginUserService(email, password).then((authData: any) => {
-    //     console.log(authData.user);
-    //     if (authData.user.emailVerified) {
-    //       loader.dismiss();
-          this.navCtrl.setRoot(TabsPage);
-    //     } else {
-    //       loader.dismiss();
-    //       that.navCtrl.setRoot(AuthorizeDonorPage);
-    //       const Alert = this.alertCtrl.create({
-    //         message: 'Please verify email first',
-    //         buttons: [
-    //           { text: 'Ok', role: 'cancel' },
-    //         ]
-    //       });
-    //       Alert.present();
-    //     }
+      const notReceiver = this.alertCtrl.create({
+        message: 'This account is not a receiver account',
+        buttons: [
+          { text: 'Cancel', role: 'cancel' },
+          {
+            text: 'Ok',
+            role: 'cancel'
+          }
+        ]
+      });
+      const notVerified = this.alertCtrl.create({
+        message: 'Please verify email first',
+        buttons: [
+          { text: 'Ok', role: 'cancel' },
+        ]
+      });
+      let toast = this.toastCtrl.create({
+        message: "The password is invalid or the user does not have a password",
+        duration: 3000,
+        position: 'top'
+      });
+      const navCtrl = this.navCtrl;
 
-    //   }, error => {
-    //     loader.dismiss();
-    //     let toast = this.toastCtrl.create({
-    //       message: "Sorry You're not registered",
-    //       duration: 3000,
-    //       position: 'top'
-    //     });
-    //     toast.present();
-    //   });
-    // }
+      var db = this.db;
+      this.apiService.fetch('users/login',userAuthDetails)
+        .then(function (response) {
+          // Handle response we get from the API
+          response.json().then(function (data) {
+            console.log(data)
+            console.log(data.data);
+            console.log(data.message)
+            // console.log(data.data["fullName"])
+
+            if (data.status == "success") {
+              if (data.data["accountType"] == "receiver") {
+                // if (data.data["verified"] == true) {
+                db.set("userInfo", data.data);
+                loader.dismiss();
+                navCtrl.setRoot(TabsPage, { uid: data.data["uid"] });
+                // } else {
+                //   notVerified.present();
+                //   loader.dismiss();
+                // }
+              } else {
+                notReceiver.present();
+                loader.dismiss();
+              }
+
+            } else {
+              if (data.data["verified"] == false) {
+                notVerified.present();
+                loader.dismiss();
+              } else if (data.message == "The password is invalid or the user does not have a password.") {
+                loader.dismiss();
+                //  Tell user why they can't be registered
+                toast.present();
+              } else {
+                loader.dismiss();
+              }
+
+            }
+          });
+
+        }).catch(function (error) {
+          this.showAlert(error);
+          loader.dismiss();
+        });
+    }
   }
-
   async signUp(): Promise<void> {
     var account = {
-      firstName: this.signupForm.value.firstName,
-      lastName: this.signupForm.value.lastName,
+      fullName: this.signupForm.value.fullName,
+      phoneNumber: this.signupForm.value.phone,
       email: this.signupForm.value.email,
       password: this.signupForm.value.password,
       accountType: "receiver",
-
     };
 
     console.log(account);
@@ -139,34 +185,57 @@ export class AuthorizeReceiverPage {
     } else {
       var loader = this.loadingCtrl.create({ content: "Please wait..." });
       loader.present();
-      this.FirebaseService.signupUserService(account).then(() => {
-        loader.dismiss().then(() => {
-          this.navCtrl.setRoot(HomePage);
-        })
-        const Alert = this.alertCtrl.create({
-          message: 'A confirmation email has been sent to your email address',
-          buttons: [
-            { text: 'Cancel', role: 'cancel' },
-            {
-              text: 'Ok',
-              role: 'cancel'
+      const signupModal: Modal = this.modal.create(SignupModalPage, {}, { showBackdrop: true, enableBackdropDismiss: true });
+
+      const navCtrl = this.navCtrl;
+
+      var db = this.db;
+
+     this.apiService.fetch('users/register',account)
+        .then(function (response) {
+          // Handle response we get from the API
+          response.json().then(function (data) {
+            console.log(data)
+            console.log(data.data);
+            console.log(data.message)
+            console.log(data.data["fullName"])
+
+            if (data.status == "success") {
+              //  if(data.data["accountType"] =="receiver"){
+              db.set("userInfo", data.data);
+              loader.dismiss();
+              signupModal.onWillDismiss(() => {
+                navCtrl.setRoot(TabsPage, { uid: data.data["uid"] });
+                // this.dataFromModal = data;
+              });
+              signupModal.present();
+              //  }else{
+              //   notReceiver.present();
+              //  }      
+            } else {
+              loader.dismiss();
+              //  Tell user why they can't be registered
             }
-          ]
+          });
+
+        }).catch(function (error) {
+          this.showAlert(error);
+          loader.dismiss();
         });
-        Alert.present();
-      }, error => {
-        loader.dismiss();
-        //unable to log in
-        let toast = this.toastCtrl.create({
-          message: error,
-          duration: 3000,
-          position: 'top'
-        });
-        toast.present();
-      });
     }
-
-
+  }
+  showAlert(msg) {
+    var customAlert = this.alertCtrl.create({
+      message: msg,
+      buttons: [
+        { text: 'Cancel', role: 'cancel' },
+        {
+          text: 'Ok',
+          role: 'cancel'
+        }
+      ]
+    });
+    customAlert.present();
   }
 
   hideLogin() {
@@ -178,11 +247,78 @@ export class AuthorizeReceiverPage {
     this.hideSignupForm = true;
   }
 
-  navigateToForgotPassword(){
+  navigateToForgotPassword() {
     this.navCtrl.push(ResetPasswordPage);
   }
-  goToLanding(){
-    this.navCtrl.setRoot(LandingPage)
+  // goToLanding() {
+  //   this.nativePageTransitions.fade(null);
+  //   this.navCtrl.setRoot(LandingPage)
+  // }
+  goBack() {
+    this.navCtrl.pop();
   }
+
+
+  async uploadpic() {
+    let actionSheet = this.actionSheetCtrl.create({
+      title: "Select Image Source",
+      buttons: [
+        {
+          text: "Select from Library",
+          handler: () => {
+            this.takePicture(this.camera.PictureSourceType.PHOTOLIBRARY);
+          }
+        },
+        {
+          text: "Use Camera",
+          handler: () => {
+            this.takePicture(this.camera.PictureSourceType.CAMERA);
+          }
+        },
+        {
+          text: "Cancel",
+          role: "cancel"
+        }
+      ]
+    });
+    actionSheet.present();
+  }
+
+  public takePicture(sourceType) {
+    var options = {
+      quality: 100,
+      targetHeight: 200,
+      targetWidth: 200,
+      destinationType: this.camera.DestinationType.DATA_URL,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE,
+      sourceType: sourceType,
+      correctOrientation: true,
+      allowEdit: true,
+      saveToPhotoAlbum: false
+    }
+
+    this.camera.getPicture(options).then((imageData) => {
+      this.loading = this.loadingCtrl.create({
+        content: 'Please wait...'
+      });
+      this.loading.present();
+      this.base64Image = 'data:image/jpeg;base64,' + imageData;
+      this.selectedPhoto = this.dataURItoBlob('data:image/jpeg;base64,' + imageData);
+      this.loading.dismiss();
+
+    }, (err) => {
+      console.log('error', err);
+    });
+  }
+  dataURItoBlob(dataURI) {
+    // code adapted from: http://stackoverflow.com/questions/33486352/cant-upload-image-to-aws-s3-from-ionic-camera
+    let binary = atob(dataURI.split(',')[1]);
+    let array = [];
+    for (let i = 0; i < binary.length; i++) {
+      array.push(binary.charCodeAt(i));
+    }
+    return new Blob([new Uint8Array(array)], { type: 'image/jpeg' });
+  };
 
 }

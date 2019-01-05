@@ -24,6 +24,11 @@ import { IonicImageViewerModule } from 'ionic-img-viewer';
 import { NativePageTransitions } from '@ionic-native/native-page-transitions';
 import { ApIserviceProvider } from '../providers/ap-iservice/ap-iservice';
 import { HTTP } from '@ionic-native/http';
+import { Base64 } from '@ionic-native/base64';
+import { DbProvider } from '../providers/db/db';
+import { EditProfilePage } from '../pages/edit-profile/edit-profile';
+import { HistoryPage } from '../pages/history/history';
+import { CategoriesPage } from '../pages/categories/categories';
 
 
 @NgModule({
@@ -39,13 +44,16 @@ import { HTTP } from '@ionic-native/http';
     AuthorizeDonorPage,
     AuthorizeReceiverPage,
     SignupModalPage,
+    EditProfilePage,
+    HistoryPage,
+    CategoriesPage,
   ],
   imports: [
     BrowserModule,
     IonicImageViewerModule,
     IonicModule.forRoot(MyApp, {
-      scrollAssist: false,
-      autoFocusAssist: false,
+      // scrollAssist: false,
+      // autoFocusAssist: false,
     })
   ],
   bootstrap: [IonicApp],
@@ -61,7 +69,9 @@ import { HTTP } from '@ionic-native/http';
     AuthorizeDonorPage,
     AuthorizeReceiverPage,
     SignupModalPage,
-
+    EditProfilePage,
+    HistoryPage,
+    CategoriesPage,
   ],
   providers: [
     Camera,
@@ -74,6 +84,8 @@ import { HTTP } from '@ionic-native/http';
     NativePageTransitions,
     ApIserviceProvider,
     HTTP,
+    Base64,
+    DbProvider,
   ]
 })
 export class AppModule { }
