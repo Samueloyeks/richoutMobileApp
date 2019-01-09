@@ -34,7 +34,7 @@ export class MyApp {
 
     this.Config.set("android", "autoFocusAssist", "delay");
 
-
+ 
   }
 
 

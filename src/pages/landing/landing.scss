@@ -1,11 +1,15 @@
 page-landing {
     @font-face {
         font-family: Quantico;
-        src: url("../../assets/fonts/Quantico");
+        src: url("../../assets/Quantico");
+        // src: url("https://fonts.googleapis.com/css?family=Quantico");
+
     }
     @font-face {
         font-family: myRoboto;
-        src: url("../../assets/fonts/Quantico");
+        src: url("../../assets/myRoboto");
+        // src:url("https://fonts.googleapis.com/css?family=Roboto");
+
     }
     .tagline{
         font-family: Roboto;

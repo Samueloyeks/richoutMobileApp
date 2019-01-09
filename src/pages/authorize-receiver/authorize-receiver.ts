@@ -118,7 +118,8 @@ export class AuthorizeReceiverPage {
       const navCtrl = this.navCtrl;
 
       var db = this.db;
-      this.apiService.fetch('users/login',userAuthDetails)
+      var self = this;
+      this.apiService.fetch('users/login', userAuthDetails)
         .then(function (response) {
           // Handle response we get from the API
           response.json().then(function (data) {
@@ -146,11 +147,14 @@ export class AuthorizeReceiverPage {
               if (data.data["verified"] == false) {
                 notVerified.present();
                 loader.dismiss();
-              } else if (data.message == "The password is invalid or the user does not have a password.") {
-                loader.dismiss();
-                //  Tell user why they can't be registered
-                toast.present();
               } else {
+                //  else if (data.message == "The password is invalid or the user does not have a password.") {
+                //   loader.dismiss();
+                //   toast.present();
+                // } else {
+                //   loader.dismiss();
+                // }
+                self.apiService.showApiResponseAlert(data.message);
                 loader.dismiss();
               }
 
@@ -158,7 +162,7 @@ export class AuthorizeReceiverPage {
           });
 
         }).catch(function (error) {
-          this.showAlert(error);
+          this.showAlert('An error occured while performing request.Please try again');
           loader.dismiss();
         });
     }
@@ -188,10 +192,19 @@ export class AuthorizeReceiverPage {
       const signupModal: Modal = this.modal.create(SignupModalPage, {}, { showBackdrop: true, enableBackdropDismiss: true });
 
       const navCtrl = this.navCtrl;
-
+      var emailTaken = this.alertCtrl.create({
+        message: 'The email address is already in use by another account',
+        buttons: [
+          { text: 'Cancel', role: 'cancel' },
+          {
+            text: 'Ok',
+            role: 'cancel'
+          }
+        ]
+      })
       var db = this.db;
-
-     this.apiService.fetch('users/register',account)
+      var self = this;
+      this.apiService.fetch('users/register', account)
         .then(function (response) {
           // Handle response we get from the API
           response.json().then(function (data) {
@@ -213,13 +226,17 @@ export class AuthorizeReceiverPage {
               //   notReceiver.present();
               //  }      
             } else {
+              // if (data.message == "The email address is already in use by another account.") {
+              //   emailTaken.present();
+              // }
+              // loader.dismiss();
+              self.apiService.showApiResponseAlert(data.message);
               loader.dismiss();
-              //  Tell user why they can't be registered
             }
           });
 
         }).catch(function (error) {
-          this.showAlert(error);
+          this.showAlert('An error occured while performing request.Please try again');
           loader.dismiss();
         });
     }
@@ -299,16 +316,49 @@ export class AuthorizeReceiverPage {
     }
 
     this.camera.getPicture(options).then((imageData) => {
-      this.loading = this.loadingCtrl.create({
+      var loading = this.loadingCtrl.create({
         content: 'Please wait...'
       });
-      this.loading.present();
-      this.base64Image = 'data:image/jpeg;base64,' + imageData;
+      loading.present();
+      this.base64Image =  imageData;
       this.selectedPhoto = this.dataURItoBlob('data:image/jpeg;base64,' + imageData);
-      this.loading.dismiss();
+
+      var self = this;
+      this.apiService.fetch('services/upload', this.base64Image)
+        .then(function (response) {
+          response.json().then(function (data) {
+            console.log(data)
+            console.log(data.data);
+            console.log(data.message)
+            console.log(data.data["fullName"])
+
+            if (data.status == "success") {
+              loading.dismiss();
+            } else {
+              self.apiService.showApiResponseAlert(data.message);
+              loading.dismiss();
+            }
+          });
+        }).catch(function (error) {
+          this.showAlert('An error occured while performing request.Please try again');
+          loading.dismiss();
+        });
+
+      loading.dismiss();
 
     }, (err) => {
       console.log('error', err);
+      const alert = this.alertCtrl.create({
+        message: 'Error uploading image',
+        buttons: [
+          { text: 'Cancel', role: 'cancel' },
+          {
+            text: 'Ok',
+            role: 'cancel'
+          }
+        ]
+      });
+      alert.present();
     });
   }
   dataURItoBlob(dataURI) {

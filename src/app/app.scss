@@ -16,11 +16,13 @@
 // automatically applied to the <body> element in the app.
 @font-face{
     font-family: Quantico;
-    src: url("../assets/fonts/Quantico")
+    src: url("../assets/Quantico")
+    // src: url("https://fonts.googleapis.com/css?family=Quantico");
 }
 @font-face{
     font-family: myRoboto;
-    src: url("../assets/fonts/myRoboto")
+    src: url("../assets/myRoboto")
+    // src:url("https://fonts.googleapis.com/css?family=Roboto");
 }
 
 modal-wrapper {

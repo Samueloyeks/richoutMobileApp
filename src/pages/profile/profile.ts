@@ -20,7 +20,7 @@ export class ProfilePage {
   accountType:any;
   memberSince: any;
   data: any;
-
+  photoUrl:any;
 
   constructor(public db:DbProvider,private base64: Base64, public apiService: ApIserviceProvider,public loadingCtrl:LoadingController,
      public navCtrl: NavController, public navParams: NavParams,public actionSheetCtrl:ActionSheetController,public app: App) {
@@ -46,6 +46,9 @@ export class ProfilePage {
     this.email = userData["email"];
     this.accountType = userData["accountType"];
     this.memberSince = userData["dateCreated"];
+   this.photoUrl = userData["profilePhotoUrl"]
+    console.log(this.photoUrl)
+   
 
 
 

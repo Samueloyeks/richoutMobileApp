@@ -11,7 +11,11 @@ export class DbProvider {
       "email": "",
       "fullName": "",
       "phoneNumber": "",
-      "uid": ""
+      "uid": "",
+      "profilePhotoUrl":""
+    },
+    "photo": {
+      "photoUrl": "",
     }
   };
   constructor() {

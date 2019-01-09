@@ -1,8 +1,9 @@
 <ion-header style="background-color: #ffffff" no-border style="padding:0px">
-
-  <ion-navbar style="background-color: #ffffff;padding:0px;min-height: 46px;" no-border hideBackButton>
+  <ion-navbar style="background-color: #ffffff;padding:0px;min-height: 46px;"
+    no-border hideBackButton>
     <ion-buttons left style="background-color: #ffffff">
-      <button  (click)="presentActionSheet()" clear style="background-color: #ffffff">
+      <button (click)="presentActionSheet()" clear style="background-color:
+        #ffffff">
         <img src="../../assets/imgs/option 2.png" height="29.5px" width="7px">
       </button>
     </ion-buttons>
@@ -17,17 +18,28 @@
 </ion-header>
 
 
-<ion-content  class="content">
-    <div style="text-align:center;margin-top: 50px;">
-        <img src="../../assets/imgs/user2.png" style="width: 150px;height:150px;">
-      </div><br>
-    
-    <div style="text-align:center"> 
-        <h4 style="text-align:center !important" style="color:#203e61">Full Name : {{fullName}}</h4>
-      <h4 style="text-align:center" style="color:#203e61">Phone : {{phoneNumber}}</h4>
-      <h4 style="text-align:center" style="color:#203e61">Email : {{email}}</h4>
-      <h4 style="text-align:center" style="color:#203e61">Member Since : {{memberSince | date}}</h4>
-      <button ion-button color="brand2" type="submit" medium disabled  style="border-radius: 0px;height: 37px;width:210px;
-      background: #ffa600;color: #203e61;font-size: 22px;box-shadow: 0px 6px 4px #0000004a;font-weight: bold" (click) = "goToEditProfile()">Edit Profile</button>
-    </div>
-</ion-content> 
+<ion-content class="content">
+  <div style="text-align:center;margin-top: 50px;">
+    <img *ngIf="!photoUrl" src="../../assets/imgs/user2.png" style="width:
+      150px;height:150px;">
+    <img *ngIf="photoUrl" [src]="photoUrl" imageViewer style="width:
+      150px;height:150px;">
+    <!-- <ion-avatar *ngIf="photoUrl">
+      <img *ngIf="photoUrl" [src]="photoUrl" imageViewer
+        style="margin:auto;display: block" />
+    </ion-avatar> -->
+  </div><br>
+
+  <div style="text-align:center">
+    <h4 style="text-align:center !important" style="color:#203e61">Full Name :
+      {{fullName}}</h4>
+    <h4 style="text-align:center" style="color:#203e61">Phone : {{phoneNumber}}</h4>
+    <h4 style="text-align:center" style="color:#203e61">Email : {{email}}</h4>
+    <h4 style="text-align:center" style="color:#203e61">Member Since :
+      {{memberSince | date}}</h4>
+    <button ion-button color="brand2" type="submit" medium disabled
+      style="border-radius: 0px;height: 37px;width:210px;
+      background: #ffa600;color: #203e61;font-size: 22px;box-shadow: 0px 6px 4px
+      #0000004a;font-weight: bold" (click)="goToEditProfile()">Edit Profile</button>
+  </div>
+</ion-content>
