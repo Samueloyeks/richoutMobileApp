@@ -9,6 +9,7 @@ import { NavParams } from 'ionic-angular/navigation/nav-params';
 import { Slides } from 'ionic-angular';
 import { HistoryPage } from '../history/history';
 import { LandingPage } from '../landing/landing';
+import { CategoriesPage } from '../categories/categories';
 
 
 @Component({
@@ -100,6 +101,9 @@ export class HomePage {
   }
   goToHistory(){
     this.navCtrl.push(HistoryPage);
+  }
+  goToCategories(){
+    this.navCtrl.push(CategoriesPage);
   }
 
 }

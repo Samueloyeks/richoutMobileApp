@@ -35,6 +35,8 @@ export class AuthorizeReceiverPage {
   public loading: Loading;
   selectedPhoto;
   public base64Image: string = null;
+  profilePhotoUrl
+
   constructor(public db: DbProvider, private base64: Base64, public apiService: ApIserviceProvider, private http: HTTP, formBuilder: FormBuilder, public menuCtrl: MenuController, public firebaseService: FirebaseServiceProvider,
     public FirebaseService: FirebaseServiceProvider, public navCtrl: NavController,
     public navParams: NavParams, public loadingCtrl: LoadingController, public alertCtrl: AlertController,
@@ -130,14 +132,9 @@ export class AuthorizeReceiverPage {
 
             if (data.status == "success") {
               if (data.data["accountType"] == "receiver") {
-                // if (data.data["verified"] == true) {
                 db.set("userInfo", data.data);
                 loader.dismiss();
                 navCtrl.setRoot(TabsPage, { uid: data.data["uid"] });
-                // } else {
-                //   notVerified.present();
-                //   loader.dismiss();
-                // }
               } else {
                 notReceiver.present();
                 loader.dismiss();
@@ -148,12 +145,6 @@ export class AuthorizeReceiverPage {
                 notVerified.present();
                 loader.dismiss();
               } else {
-                //  else if (data.message == "The password is invalid or the user does not have a password.") {
-                //   loader.dismiss();
-                //   toast.present();
-                // } else {
-                //   loader.dismiss();
-                // }
                 self.apiService.showApiResponseAlert(data.message);
                 loader.dismiss();
               }
@@ -174,6 +165,7 @@ export class AuthorizeReceiverPage {
       email: this.signupForm.value.email,
       password: this.signupForm.value.password,
       accountType: "receiver",
+      profilePhotoUrl:null
     };
 
     console.log(account);
@@ -204,41 +196,85 @@ export class AuthorizeReceiverPage {
       })
       var db = this.db;
       var self = this;
-      this.apiService.fetch('users/register', account)
+
+      if(this.base64Image){
+        this.apiService.fetch('services/upload', { "image": this.base64Image })
         .then(function (response) {
-          // Handle response we get from the API
           response.json().then(function (data) {
-            console.log(data)
-            console.log(data.data);
-            console.log(data.message)
-            console.log(data.data["fullName"])
+            console.log(data);
+            let photo = { "photoUrl":data.data["url"]}
+            console.log(photo)
 
             if (data.status == "success") {
-              //  if(data.data["accountType"] =="receiver"){
-              db.set("userInfo", data.data);
-              loader.dismiss();
-              signupModal.onWillDismiss(() => {
-                navCtrl.setRoot(TabsPage, { uid: data.data["uid"] });
-                // this.dataFromModal = data;
+              console.log('Url to be attached to registration: '+data.data["url"])
+              account.profilePhotoUrl = data.data["url"];
+              self.apiService.fetch('users/register', account)
+              .then(function (response) {
+                // Handle response we get from the API
+                response.json().then(function (data) {
+                  console.log(data)
+                  console.log(data.data);
+                  console.log(data.message)
+                  console.log(data.data["fullName"])
+        
+                  if (data.status == "success") {
+                    db.set("userInfo", data.data);
+                    loader.dismiss();
+                    signupModal.onWillDismiss(() => {
+                      navCtrl.setRoot(TabsPage, { uid: data.data["uid"] });
+                    });
+                    signupModal.present();
+                  } else {
+                    self.apiService.showApiResponseAlert(data.message);
+                    loader.dismiss();
+                  }
+                });
+        
+              }).catch((error) => {
+                this.showAlert('An error occured while performing request.Please try again');
+                loader.dismiss();
               });
-              signupModal.present();
-              //  }else{
-              //   notReceiver.present();
-              //  }      
+              loader.dismiss();
             } else {
-              // if (data.message == "The email address is already in use by another account.") {
-              //   emailTaken.present();
-              // }
-              // loader.dismiss();
               self.apiService.showApiResponseAlert(data.message);
               loader.dismiss();
             }
           });
-
-        }).catch(function (error) {
+        }).catch((error) => {
           this.showAlert('An error occured while performing request.Please try again');
+          // alert(error);
           loader.dismiss();
         });
+      }else{
+
+      this.apiService.fetch('users/register', account)
+      .then(function (response) {
+        // Handle response we get from the API
+        response.json().then(function (data) {
+          console.log(data) 
+          console.log(data.data);
+          console.log(data.message)
+          console.log(data.data["fullName"])
+
+          if (data.status == "success") {
+            db.set("userInfo", data.data);
+            loader.dismiss();
+            signupModal.onWillDismiss(() => {
+              navCtrl.setRoot(TabsPage, { uid: data.data["uid"] });
+            });
+            signupModal.present();
+          } else {
+            self.apiService.showApiResponseAlert(data.message);
+            loader.dismiss();
+          }
+        });
+
+      }).catch((error) => {
+        this.showAlert('An error occured while performing request.Please try again');
+        loader.dismiss();
+      });
+
+      }
     }
   }
   showAlert(msg) {
@@ -283,13 +319,13 @@ export class AuthorizeReceiverPage {
         {
           text: "Select from Library",
           handler: () => {
-            this.takePicture(this.camera.PictureSourceType.PHOTOLIBRARY);
+            return this.takePicture(this.camera.PictureSourceType.PHOTOLIBRARY);
           }
         },
         {
           text: "Use Camera",
           handler: () => {
-            this.takePicture(this.camera.PictureSourceType.CAMERA);
+            return this.takePicture(this.camera.PictureSourceType.CAMERA);
           }
         },
         {
@@ -319,37 +355,44 @@ export class AuthorizeReceiverPage {
       var loading = this.loadingCtrl.create({
         content: 'Please wait...'
       });
-      loading.present();
-      this.base64Image =  imageData;
-      this.selectedPhoto = this.dataURItoBlob('data:image/jpeg;base64,' + imageData);
+      loading.present().then(() => {
+        this.base64Image = 'data:image/jpeg;base64,' + imageData;
+        console.log(JSON.stringify({ "image": this.base64Image }))
 
-      var self = this;
-      this.apiService.fetch('services/upload', this.base64Image)
-        .then(function (response) {
-          response.json().then(function (data) {
-            console.log(data)
-            console.log(data.data);
-            console.log(data.message)
-            console.log(data.data["fullName"])
+        var db = this.db;
+        var self = this;
+        // this.apiService.fetch('services/upload', { "image": this.base64Image })
+        //   .then(function (response) {
+        //     response.json().then(function (data) {
+        //       console.log(data);
+        //       let photo = { "photoUrl":data.data["url"]}
+        //       console.log(photo)
 
-            if (data.status == "success") {
-              loading.dismiss();
-            } else {
-              self.apiService.showApiResponseAlert(data.message);
-              loading.dismiss();
-            }
-          });
-        }).catch(function (error) {
-          this.showAlert('An error occured while performing request.Please try again');
-          loading.dismiss();
-        });
+        //       if (data.status == "success") {
+        //         // db.set("photo", photo);
+        //         // db.set("userInfo.profilePhotoUrl",data.data["url"])
+        //         loading.dismiss();
+        //         console.log(data.data["url"])
+        //         return data.data["url"];
+                
+        //         // return photo;
 
-      loading.dismiss();
-
+        //       } else {
+        //         self.apiService.showApiResponseAlert(data.message);
+        //         loading.dismiss();
+        //       }
+        //     });
+        //   }).catch((error) => {
+        //     this.showAlert('An error occured while performing request.Please try again');
+        //     // alert(error);
+        //     loading.dismiss();
+        //   });
+        loading.dismiss();
+      })
     }, (err) => {
       console.log('error', err);
       const alert = this.alertCtrl.create({
-        message: 'Error uploading image',
+        message: err,
         buttons: [
           { text: 'Cancel', role: 'cancel' },
           {
@@ -361,14 +404,5 @@ export class AuthorizeReceiverPage {
       alert.present();
     });
   }
-  dataURItoBlob(dataURI) {
-    // code adapted from: http://stackoverflow.com/questions/33486352/cant-upload-image-to-aws-s3-from-ionic-camera
-    let binary = atob(dataURI.split(',')[1]);
-    let array = [];
-    for (let i = 0; i < binary.length; i++) {
-      array.push(binary.charCodeAt(i));
-    }
-    return new Blob([new Uint8Array(array)], { type: 'image/jpeg' });
-  };
 
 }

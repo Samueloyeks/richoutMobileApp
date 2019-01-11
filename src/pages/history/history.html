@@ -18,9 +18,10 @@
   </ion-navbar>
 
 </ion-header>
-<ion-content class="content">
+<ion-content class="content" *ngIf="accountType =='donor'">
   <p style="-webkit-text-stroke: 1px;font-size: large;margin-top: 2px" text-wrap
     padding>History</p>
+    <p style="text-align: center;color: gray;font-size: 23px;"> No history</p>
 
 
 
@@ -30,3 +31,16 @@
       15px;margin-right: 10px;" (click)="goToCategories()"><ion-icon name="add"></ion-icon></button>
   </ion-fab>
 </ion-content>
+
+<ion-content class="content" *ngIf="accountType =='receiver'">
+    <p style="-webkit-text-stroke: 1px;font-size: large;margin-top: 2px" text-wrap
+      padding>History</p>
+  
+  
+  
+  
+    <ion-fab right bottom>
+      <button ion-fab style="background: #ffa600;color: white;margin-bottom:
+        15px;margin-right: 10px;" (click)="goToCategories()"><ion-icon name="add"></ion-icon></button>
+    </ion-fab>
+  </ion-content>

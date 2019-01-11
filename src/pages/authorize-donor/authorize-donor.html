@@ -74,10 +74,10 @@
 
   </div>
 
-  <div id="signup" *ngIf="hideLoginForm">
+  <div id="signup" *ngIf="hideLoginForm"> 
     <ion-item no-lines>
       <div style="text-align:center !important">
-        <img *ngIf="!base64Image" src="../../assets/imgs/Group 8.png"
+        <img *ngIf="!base64Image" src="../../assets/imgs/profileAvatar.png"
           imageViewer style="margin:auto;display: block"
           style="height:83px;width:83px">
         <ion-avatar *ngIf="base64Image">
@@ -94,7 +94,7 @@
           formControlName="fullName"></ion-input> 
       </ion-item><br>
       <ion-item no-lines class="input" style="background-color:#c4c4c461;">
-        <ion-input placeholder="PHONE NUMBER" type="text" 
+        <ion-input placeholder="PHONE NUMBER" type="number" 
           formControlName="phone"></ion-input>
       </ion-item><br>
       <ion-item no-lines class="input" style="background-color:#c4c4c461;" [class.invalid]="!signupForm.controls.email.valid

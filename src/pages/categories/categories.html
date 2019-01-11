@@ -18,12 +18,244 @@
   </ion-navbar>
 
 </ion-header>
-<ion-content class="content">
-  <p style="-webkit-text-stroke: 1px;font-size: large;margin-top: 2px" text-wrap
+<ion-content class="content" *ngIf="accountType =='donor'">
+  <p style="-webkit-text-stroke: 1px;font-size: large;margin-top: 2px;padding-bottom: 1px;
+  margin-bottom: 0px;" text-wrap
     padding>Donation Categories</p>
 
+  <ion-row>
+    <ion-col col-6>
+      <ion-card style="border: 1px solid #4D7AB0;">
+        <ion-card-content>
+          <ion-row>
+            <ion-col col-2></ion-col>
+            <ion-col col-8>
+              <img src="../../assets/imgs/monetaryDonation.png" style="width:84px
+                !important;height:84px">
+            </ion-col>  
+            <ion-col col-2></ion-col>
+          </ion-row>
+          <div style="text-align:center">
+            <p style="text-align:center;font-weight: bold" text-wrap>Monetary Donations</p>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
 
+    <ion-col col-6>
+      <ion-card style="border: 1px solid #BC7F0D;">
+        <ion-card-content>
+          <ion-row>
+            <ion-col col-2></ion-col>
+            <ion-col col-8>
+              <img src="../../assets/imgs/clothing.png" style="width:84px
+                !important;height:84px">
+            </ion-col>
+            <ion-col col-2></ion-col>
+          </ion-row>
+          <div style="text-align:center">
+            <p style="text-align:center;font-weight: bold" text-wrap>Clothing Items</p>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+  </ion-row>
 
+  <ion-row>
+      <ion-col col-6>
+        <ion-card style="border: 1px solid #AF1313;">
+          <ion-card-content>
+            <ion-row>
+              <ion-col col-2></ion-col>
+              <ion-col col-8>
+                <img src="../../assets/imgs/diet.png" style="width:84px
+                  !important;height:84px">
+              </ion-col>  
+              <ion-col col-2></ion-col>
+            </ion-row>
+            <div style="text-align:center">
+              <p style="text-align:center;font-weight: bold" text-wrap>Food Items</p>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+  
+      <ion-col col-6>
+        <ion-card style="border: 1px solid #4B0082;">
+          <ion-card-content>
+            <ion-row>
+              <ion-col col-2></ion-col>
+              <ion-col col-8>
+                <img src="../../assets/imgs/gadget.png" style="width:84px
+                  !important;height:84px">
+              </ion-col>
+              <ion-col col-2></ion-col>
+            </ion-row>
+            <div style="text-align:center">
+              <p style="text-align:center;font-weight: bold" text-wrap>Gadget Donations</p>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
 
+    <ion-row>
+        <ion-col col-6>
+          <ion-card style="border: 1px solid #4D7AB0;">
+            <ion-card-content>
+              <ion-row>
+                <ion-col col-2></ion-col>
+                <ion-col col-8>
+                  <img src="../../assets/imgs/first-aid-kit.png" style="width:84px
+                    !important;height:84px">
+                </ion-col>  
+                <ion-col col-2></ion-col>
+              </ion-row>
+              <div style="text-align:center">
+                <p style="text-align:center;font-weight: bold" text-wrap>Medical Donations</p>
+              </div>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+    
+        <ion-col col-6>
+          <ion-card style="border: 1px solid #E4B357;">
+            <ion-card-content>
+              <ion-row>
+                <ion-col col-2></ion-col>
+                <ion-col col-8>
+                  <img src="../../assets/imgs/others.png" style="width:84px
+                    !important;height:84px">
+                </ion-col>
+                <ion-col col-2></ion-col>
+              </ion-row>
+              <div style="text-align:center">
+                <p style="text-align:center;font-weight: bold" text-wrap>Others</p>
+              </div>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+
+</ion-content>
+
+<ion-content *ngIf="accountType =='receiver'">
+  <p style="-webkit-text-stroke: 1px;font-size: large;margin-top: 2px;padding-bottom: 1px;
+  margin-bottom: 0px;" text-wrap
+    padding>Request Categories</p>
+
+    <ion-row>
+        <ion-col col-6>
+          <ion-card style="border: 1px solid #4D7AB0;">
+            <ion-card-content>
+              <ion-row>
+                <ion-col col-2></ion-col>
+                <ion-col col-8>
+                  <img src="../../assets/imgs/monetaryDonation.png" style="width:84px
+                    !important;height:84px">
+                </ion-col>  
+                <ion-col col-2></ion-col>
+              </ion-row>
+              <div style="text-align:center">
+                <p style="text-align:center;font-weight: bold" text-wrap>Monetary Request</p>
+              </div>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+    
+        <ion-col col-6>
+          <ion-card style="border: 1px solid #BC7F0D;">
+            <ion-card-content>
+              <ion-row>
+                <ion-col col-2></ion-col>
+                <ion-col col-8>
+                  <img src="../../assets/imgs/clothing.png" style="width:84px
+                    !important;height:84px">
+                </ion-col>
+                <ion-col col-2></ion-col>
+              </ion-row>
+              <div style="text-align:center">
+                <p style="text-align:center;font-weight: bold" text-wrap>Clothing Items</p>
+              </div>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    
+      <ion-row>
+          <ion-col col-6>
+            <ion-card style="border: 1px solid #AF1313;">
+              <ion-card-content>
+                <ion-row>
+                  <ion-col col-2></ion-col>
+                  <ion-col col-8>
+                    <img src="../../assets/imgs/diet.png" style="width:84px
+                      !important;height:84px">
+                  </ion-col>  
+                  <ion-col col-2></ion-col>
+                </ion-row>
+                <div style="text-align:center">
+                  <p style="text-align:center;font-weight: bold" text-wrap>Food Items</p>
+                </div>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+      
+          <ion-col col-6>
+            <ion-card style="border: 1px solid #4B0082;">
+              <ion-card-content>
+                <ion-row>
+                  <ion-col col-2></ion-col>
+                  <ion-col col-8>
+                    <img src="../../assets/imgs/gadget.png" style="width:84px
+                      !important;height:84px">
+                  </ion-col>
+                  <ion-col col-2></ion-col>
+                </ion-row>
+                <div style="text-align:center">
+                  <p style="text-align:center;font-weight: bold" text-wrap>Gadget Request</p>
+                </div>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+    
+        <ion-row>
+            <ion-col col-6>
+              <ion-card style="border: 1px solid #4D7AB0;">
+                <ion-card-content>
+                  <ion-row>
+                    <ion-col col-2></ion-col>
+                    <ion-col col-8>
+                      <img src="../../assets/imgs/first-aid-kit.png" style="width:84px
+                        !important;height:84px">
+                    </ion-col>  
+                    <ion-col col-2></ion-col>
+                  </ion-row>
+                  <div style="text-align:center">
+                    <p style="text-align:center;font-weight: bold" text-wrap>Medical Request</p>
+                  </div>
+                </ion-card-content>
+              </ion-card>
+            </ion-col>
+        
+            <ion-col col-6>
+              <ion-card style="border: 1px solid #E4B357;">
+                <ion-card-content>
+                  <ion-row>
+                    <ion-col col-2></ion-col>
+                    <ion-col col-8>
+                      <img src="../../assets/imgs/others.png" style="width:84px
+                        !important;height:84px">
+                    </ion-col>
+                    <ion-col col-2></ion-col>
+                  </ion-row>
+                  <div style="text-align:center">
+                    <p style="text-align:center;font-weight: bold" text-wrap>Other Requests</p>
+                  </div>
+                </ion-card-content>
+              </ion-card>
+            </ion-col>
+          </ion-row>
 
 </ion-content>

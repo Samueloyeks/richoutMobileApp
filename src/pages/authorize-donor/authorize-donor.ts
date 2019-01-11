@@ -232,6 +232,7 @@ export class AuthorizeDonorPage {
       var self = this;
 
       if(this.base64Image){
+        console.log(this.base64Image)
         this.apiService.fetch('services/upload', { "image": this.base64Image })
         .then(function (response) {
           response.json().then(function (data) {
@@ -285,7 +286,7 @@ export class AuthorizeDonorPage {
       .then(function (response) {
         // Handle response we get from the API
         response.json().then(function (data) {
-          console.log(data)
+          console.log(data) 
           console.log(data.data);
           console.log(data.message)
           console.log(data.data["fullName"])

@@ -11,10 +11,10 @@ import { NavParams } from 'ionic-angular/navigation/nav-params';
 })
 export class TabsPage {
 
-  // tab1Root = HomePage;
+  tab1Root = HomePage;
   tab2Root = ProfilePage; 
   // tab3Root = AboutPage;
-  // tab4Root = ContactPage;
+  tab4Root = ContactPage;
   
   uid:any;
   userData:any;
